@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { manhattanNorm, euclideanNorm } from './norm';
+import { manhattanNorm, euclideanNorm, NormVersion } from './norm';
 @Component({
   selector: 'app-norm',
   templateUrl: './norm.component.html',
@@ -23,13 +23,14 @@ export class NormComponent {
   processFileContent(text: string): void {
     const lines = text.split('\n');
     let results: string[] = [];
+    const version = NormVersion.V1; // Change to V2 if needed
 
     lines.forEach((line, index) => {
       const [x, y] = line.split(',').map(Number);
       if (!isNaN(x) && !isNaN(y)) {
-        const manhattan = manhattanNorm(x, y);
-        const euclidean = euclideanNorm(x, y);
-        results.push(`Line ${index + 1}: Manhattan=${manhattan}, Euclidean=${euclidean}`);
+        const manhattan = manhattanNorm(x, y, version);
+        const euclidean = euclideanNorm(x, y, version);
+        results.push(`Line ${index + 1}: Manhattan=${manhattan}, Euclidean=${euclidean} (Version: ${version})`);
       } else {
         results.push(`Line ${index + 1}: Invalid input`);
       }

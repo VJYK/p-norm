@@ -1,30 +1,53 @@
-/**
- * Computes the Manhattan norm point.
- * The Manhattan norm is the sum of the absolute values of the x and y coordinates. 
- * @param {number} x - The x-coordinate of the point.
- * @param {number} y - The y-coordinate of the point.
- * @returns {number} The Manhattan norm of the point (x, y).
- */
-export function manhattanNorm(x: number, y: number): number {
-    return Math.abs(x) + Math.abs(y);
-  }
-  
-  /**
-   * Computes the Euclidean norm point.
-   * The Euclidean norm is the straight-line distance from the origin to the point (x, y). 
-   * @param {number} x - The x-coordinate of the point.
-   * @param {number} y - The y-coordinate of the point.
-   * @returns {number} The Euclidean norm of the point (x, y).
-   */
-  export function euclideanNorm(x: number, y: number): number {
-    return Math.sqrt(x * x + y * y);
-  }
-  
-// Variant 2: Using a point object
-export function manhattanNormPoint(point: { x: number; y: number }): number {
-  return Math.abs(point.x) + Math.abs(point.y);
+// src/norm-functions.ts
+
+// Enum for Version Selection
+export enum NormVersion {
+  V1 = "V1",
+  V2 = "V2",
 }
 
-export function euclideanNormPoint(point: { x: number; y: number }): number {
-  return Math.sqrt(point.x * point.x + point.y * point.y);
+//Variant 1: Using two parameters (x, y)
+export function manhattanNorm(x: number, y: number, version: NormVersion = NormVersion.V1): number {
+  switch (version) {
+    case NormVersion.V1:
+      return Math.abs(x) + Math.abs(y); //Version 1: Direct computation
+    case NormVersion.V2:
+      return Math.abs([x, y][0]) + Math.abs([x, y][1]); // Version 2: Using an array representation
+    default:
+      throw new Error("Invalid version");
+  }
+}
+
+export function euclideanNorm(x: number, y: number, version: NormVersion = NormVersion.V1): number {
+  switch (version) {
+    case NormVersion.V1:
+      return Math.sqrt(x * x + y * y); //Version 1: Direct computation
+    case NormVersion.V2:
+      return Math.sqrt([x, y][0] * [x, y][0] + [x, y][1] * [x, y][1]); // Version 2: Using an array representation
+    default:
+      throw new Error("Invalid version");
+  }
+}
+
+// Variant 2: Using a point object
+export function manhattanNormPoint(point: { x: number; y: number }, version: NormVersion = NormVersion.V1): number {
+  switch (version) {
+    case NormVersion.V1:
+      return Math.abs(point.x) + Math.abs(point.y); //Version 1: Direct object access
+    case NormVersion.V2:
+      return Math.abs(point["x"]) + Math.abs(point["y"]); //Version 2: Using property access by key
+    default:
+      throw new Error("Invalid version");
+  }
+}
+
+export function euclideanNormPoint(point: { x: number; y: number }, version: NormVersion = NormVersion.V1): number {
+  switch (version) {
+    case NormVersion.V1:
+      return Math.sqrt(point.x * point.x + point.y * point.y); // 🔹 Version 1: Direct object access
+    case NormVersion.V2:
+      return Math.sqrt(point["x"] * point["x"] + point["y"] * point["y"]); // 🔹 Version 2: Using property access by key
+    default:
+      throw new Error("Invalid version");
+  }
 }
